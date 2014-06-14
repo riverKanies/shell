@@ -73,14 +73,6 @@ PAGER=$READER
 # this is pretty unnecessary
 unset MAILCHECK
 
-# I only want to see new motds
-HUSHLOGIN=~/var/hushlogin
-MOTD=$(/bin/ls -t /etc/issue /etc/motd $HUSHLOGIN 2>/dev/null| head -n 1)
-if [ "$MOTD" != "$HUSHLOGIN" ]; then
-	cat $MOTD
-	touch $HUSHLOGIN
-fi
-
 # make our ps cross-system
 if [ -z "$PSARGS" ]; then
   PSARGS='-ef'
