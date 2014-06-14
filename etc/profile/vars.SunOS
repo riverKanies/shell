@@ -1,0 +1,8 @@
+###
+# vim: syntax=sh
+#
+# $Id: vars.SunOS 226 2006-07-11 23:09:09Z luke $
+
+PATH=$PATH:/usr/openwin/bin:/usr/ccs/bin:/usr/contrib/bin:/usr/dt/bin:/opt/csw/bin:/usr/sfw/bin:/usr/sfw/sbin:/opt/csw/sbin
+
+MANPATH=$MANPATH:/usr/share/man:/usr/dt/share/man:/usr/openwin/man

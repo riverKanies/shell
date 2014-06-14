@@ -1,0 +1,99 @@
+###
+# vim: syntax=sh
+#
+# $Id: vars 366 2008-02-12 20:40:11Z luke $
+
+export PINK="[0;31m"
+export GREEN="[0;32m"
+export YELLOW="[0;33m"
+export SLATE="[0;34m"
+export ORANGE="[0;35m"
+export BLUE="[0;36m"
+export NOCOLOR="[0m"
+
+git_current_branch()
+{
+  git branch 2>/dev/null | sed -n '/^\*/ s/^\* //p'
+}
+
+git_display()
+{
+  br=$(git_current_branch)
+  if [ -n br ]; then
+    echo $br | BRANCH="$br" GIT_COLOR=$(git_color) awk '{if ($1) { print ENVIRON["GIT_COLOR"] ENVIRON["BRANCH"] " " } }'
+  fi
+}
+
+git_color()
+{
+  git status 2>/dev/null | grep -c : | awk '{if ($1 > 0) { print ENVIRON["ORANGE"] } else { print ENVIRON["PINK"] } }'
+}
+
+# set up the prompts
+if [ -n "$BASH" ]; then
+  title="\033]0;\w\007"
+	PS1="$title[\$(git_display)$GREEN\w$NOCOLOR]\n\u@\h \$ "
+else
+    title="\033]0;$HOSTNAME:$PWD\007"
+	PS1="$LOGNAME@$HOSTNAME:"'$PWD'' $ '
+fi
+
+# uh, yay
+unset which 2>/dev/null
+unalias which 2>/dev/null
+WHICH=$(which which)
+
+VIM=$($WHICH vim)
+#echo VIM is [$VIM] > ~/tmp/editorlog
+if [ -n "$VIM" ]; then
+    EDITOR=$VIM
+#    echo EDITOR is [$EDITOR] >> ~/tmp/editorlog
+else
+    EDITOR=$($WHICH vi)
+#    echo EDITOR is [$EDITOR] >> ~/tmp/editorlog
+fi
+#echo EDITOR is [$EDITOR] >> ~/tmp/editorlog
+
+HISTSIZE=1500
+HISTFILESIZE=1500
+HISTFILE=~/var/bash/history
+
+umask 022
+
+# set up the pager and reader
+LESSARGS='-r -X'
+# check for less; otherwise, use *ugh* more
+if [ "$($WHICH less | grep bin/less)" ]
+	then READER="less $LESSARGS"
+else
+	READER=$($WHICH more)
+fi
+PAGER=$READER
+
+# this is pretty unnecessary
+unset MAILCHECK
+
+# I only want to see new motds
+HUSHLOGIN=~/var/hushlogin
+MOTD=$(/bin/ls -t /etc/issue /etc/motd $HUSHLOGIN 2>/dev/null| head -n 1)
+if [ "$MOTD" != "$HUSHLOGIN" ]; then
+	cat $MOTD
+	touch $HUSHLOGIN
+fi
+
+# make our ps cross-system
+if [ -z "$PSARGS" ]; then
+  PSARGS='-ef'
+fi
+
+# set up ex
+EXINIT="set tabstop=3 showmatch autoindent showmode"
+
+export RUBYLIB=~/lib/ruby
+if [ -d ~/puppet/lib ]; then
+  export RUBYLIB=$RUBYLIB:~/puppet/lib
+fi
+
+# export it all
+export PATH MANPATH PAGER EDITOR TERM HISTSIZE HISTFILESIZE EXINIT TERMINFO
+export TERM

@@ -1,0 +1,5 @@
+##
+#
+# $Id: controls.Linux 1 2005-03-24 06:53:49Z luke $
+
+stty erase 

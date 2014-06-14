@@ -1,0 +1,13 @@
+###
+#
+# $Id: vars.debian 1 2005-03-24 06:53:49Z luke $
+
+MANPATH=$MANPATH:/usr/X11R6/man:/usr/share/man
+
+GDK_USE_XFT=1
+export GDK_USE_XFT
+
+BROWSER="mozilla-firebird -remote openurl(%s)"
+export BROWSER
+
+PATH=$PATH:/usr/X11R6/bin

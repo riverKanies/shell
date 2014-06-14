@@ -1,0 +1,98 @@
+###
+# vim: syntax=sh
+
+# first things first: see if we're interactive
+if [ -n "$PS1" ]; then
+	export INTERACTIVE=1
+fi
+
+# set our path and manpath to something small
+# the other scripts will expand it later
+PATH=$HOME/bin:/usr/local/bin:/bin:/usr/bin:/usr/sbin:/sbin:/usr/local/sbin:~/puppet/bin
+MANPATH=/usr/man:/usr/local/man
+
+export PATH MANPATH
+
+umask 022
+
+if [ -n "$INTERACTIVE" ]; then
+	if [ ! -d ~/etc -a "$LOGNAME" = "luke" ]; then
+		cd
+		export CVS_RSH=ssh
+		cvs -d $LOGNAME@cvs.madstop.com:/cvsroot co home/$LOGNAME/etc
+		mv ~/home/$LOGNAME/etc .
+		rm -rf ~/home
+		cd -
+	fi
+
+	if [ -f ~/.profile -a ! -L ~/.profile ]; then
+		. ~/etc/profile/links
+	fi
+
+	DIRS='tmp var var/bash'
+
+	for dir in $DIRS; do
+		if [ ! -d ~/$dir ]; then
+			mkdir -p ~/$dir
+		fi
+	done
+	unset DIRS
+
+	UNAME=$(uname -s)
+    export UNAME
+	if [ "$UNAME" = "Linux" ]; then
+		if [ -f /etc/debian_version ]; then
+			UNAME=debian
+		elif [ -f /etc/gentoo-release ]; then
+			UNAME=gentoo
+		elif [ -f /etc/mandrake-release ]; then
+			UNAME=mandrake
+		elif [ -f /etc/redhat-release ]; then
+			UNAME=redhat
+		fi
+	fi
+	
+	PPATH=~/etc/profile
+	
+	LIST="vars aliases functions controls"
+	
+	# figure out what shell we're running under:
+	if [ "$(echo $0 | grep bash)" ]; then
+		BASH=1
+	elif [ "$(echo $0 | grep ksh)" ]; then
+		KSH=1
+	fi
+	
+	if [ -f $PPATH/init.$UNAME ]; then
+		. $PPATH/init.$UNAME
+	fi
+	
+	for file in $LIST; do
+		if [ -f $PPATH/$file.$UNAME ]; then
+			. $PPATH/$file.$UNAME
+		fi
+		if [ -f $PPATH/$file ]; then
+			. $PPATH/$file
+		fi
+	done
+	
+	set -o vi
+
+  GIT_COMPLETION=/usr/local/git/contrib/completion/git-completion.bash
+  if [ -f $GIT_COMPLETION ]; then
+    . $GIT_COMPLETION
+  fi
+	
+	MANPATH=$MANPATH:.
+fi
+#
+export PATH=/opt/local/sbin:$PATH
+
+# Setting PATH for MacPython 2.4
+# The orginal version is saved in .profile.pysave
+PATH="/Library/Frameworks/Python.framework/Versions/Current/bin:${PATH}"
+export PATH
+
+# MacPorts Installer addition on 2010-11-08_at_11:40:43: adding an appropriate PATH variable for use with MacPorts.
+export PATH=/opt/local/bin:/opt/local/sbin:$PATH
+# Finished adapting your PATH environment variable for use with MacPorts.

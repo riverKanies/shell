@@ -1,0 +1,165 @@
+set term=xterm-256color
+set wildmode=longest,list
+
+set directory=~/var/vim/swap
+
+if has("gui_running")
+  set guioptions=egmrt
+  set background=dark
+  colorscheme koehler
+endif
+
+set rtp+=$GOROOT/misc/vim
+
+set visualbell
+
+let mapleader = ","
+
+" Make sure we've always got some space around our cursor when we scroll off-screen
+set scrolloff=3
+
+if has("terminfo")
+    set t_Co=16
+    set t_Sf=[%?%p1%{8}%<%t%p1%{40}%+%e%p1%{92}%+%;%dm
+    set t_Sb=[%?%p1%{8}%<%t%p1%{30}%+%e%p1%{82}%+%;%dm
+else
+    set t_Co=16
+    set t_Sf=[3%dm
+    set t_Sb=[4%dm
+endif
+
+set t_AB=[%?%p1%{8}%<%t25;%p1%{40}%+%e5;%p1%{32}%+%;%dm
+" This is causing a failure on centos somehow
+set t_AF=[%?%p1%{8}%<%t22;%p1%{30}%+%e1;%p1%{22}%+%;%dm
+
+" yep, i always want syntax
+syntax on
+
+" all tabs = 2
+set tabstop=2
+set softtabstop=2
+set shiftwidth=2
+set expandtab
+
+" show matching parens and such
+set showmatch
+
+" duh
+set autoindent
+
+"
+set showmode
+
+" i hate the highlight thing
+set nohlsearch
+
+set ruler
+set showcmd
+set history=50
+
+if has("autocmd")
+  " When editing a file, always jump to the last cursor position
+  autocmd BufReadPost *
+  \ if line("'\"") > 0 && line ("'\"") <= line("$") |
+  \   exe "normal g'\"" |
+  \ endif
+endif
+
+autocmd FileType text setlocal textwidth=72
+
+" from skaar
+augroup cprog
+	au!
+	autocmd BufRead * set formatoptions=tcql nocindent comments&
+	autocmd BufRead *.c,*.h set softtabstop=2 formatoptions=croql cindent comments=sr:/*,mb:*,el:*/,://
+	autocmd BufWritePre *.c,*.h norm ,L
+augroup END
+
+augroup Messages " Mail & news
+    autocmd!
+    autocmd BufRead mutt*[0-9],snd.*,.letter,.followup,.article,.article[0-9] set textwidth=76 formatoptions=2tcq comments=n:>,n::,n:#,n:%,n:\| digraph
+    autocmd BufRead pico*[0-9],snd.*,.letter,.followup,.article,.article[0-9] set textwidth=76 formatoptions=2tcq comments=n:>,n::,n:#,n:%,n:\| digraph
+    normal ,kqs
+augroup END
+
+"map <leader>f :FuzzyFinderTextMate<CR>
+"let g:fuzzy_ignore = "*.swp,*.swo,.git"
+"
+map <leader>tw <C-w>v<C-w>l:e %:s?lib/puppet?spec/unit?:s?.rb?_spec.rb?<CR><C-w>h
+map <leader>tt :tabe %:s?lib/puppet?spec/unit?:s?.rb?_spec.rb?<CR>
+
+
+map <leader>w :set wrap linebreak textwidth=0<CR>
+
+" Advice from http://stevelosh.com/blog/2010/09/coming-home-to-vim/
+filetype off
+call pathogen#runtime_append_all_bundles()
+filetype plugin indent on
+
+set nocompatible
+
+set modelines=0
+
+" Second set of advice
+set encoding=utf-8
+set scrolloff=3
+set autoindent
+set showmode
+set showcmd
+set hidden
+set wildmenu
+set wildmode=list:longest
+set visualbell
+" create a line where the cursor is
+" set cursorline
+set ttyfast
+set ruler
+set backspace=indent,eol,start
+set laststatus=2
+" changes Vim’s line number column to display how far away each line is from the current one, instead of showing the absolute line number
+" set relativenumber
+" tells Vim to create <FILENAME>.un~ files whenever you edit a file
+" set undofile
+
+" make Vim deal with case-sensitive search intelligently. If you search for an all-lowercase string your search will be case-insensitive, but if one or more characters is uppercase the search will be case-sensitive
+set ignorecase
+set smartcase
+
+" applies substitutions globally on lines. For example, instead of
+" :%s/foo/bar/g you just type :%s/foo/bar/. This is almost always what you want
+" (when was the last time you wanted to only replace the first occurrence of a
+" word on a line?) and if you need the previous behavior you just tack on the g
+" again
+"set gdefault
+
+" make the tab key match bracket pairs. I use this to move around all the time and <tab> is a hell of a lot easier to type than %
+nnoremap <tab> %
+vnoremap <tab> %
+
+" TextMate stuff
+" set list
+" show all hidden characters
+" set listchars=tab:▸\ ,eol:¬
+
+" Get rid of f1
+inoremap <F1> <ESC>
+nnoremap <F1> <ESC>
+vnoremap <F1> <ESC>
+
+" Use Ack
+nnoremap <leader>a :Ack
+
+" Help wrapping text
+nnoremap <leader>q gqip
+
+" Relesect the text I just pasted
+nnoremap <leader>v V`]
+
+" Open the vimrc in a new window
+nnoremap <leader>ev <C-w><C-v><C-l>:e $MYVIMRC<cr>
+
+" Easier window movement
+nnoremap <C-h> <C-w>h
+nnoremap <C-j> <C-w>j
+nnoremap <C-k> <C-w>k
+nnoremap <C-l> <C-w>l

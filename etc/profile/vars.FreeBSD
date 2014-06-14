@@ -1,0 +1,7 @@
+###
+#
+# vim: syntax=sh
+# $Id: vars.FreeBSD 174 2006-03-12 06:26:55Z luke $
+
+PSARGS='-auxwww'
+MANPATH=$MANPATH:/usr/share/man

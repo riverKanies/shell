@@ -1,0 +1,27 @@
+[user]
+	name = Luke Kanies
+	email = luke@puppetlabs.com
+[color]
+	status = auto
+	diff = auto
+	branch = auto
+[sendmail]
+    suppressfrom = true
+    signedoffcc = false
+[github]
+	user = lak
+	token = 7e2ec5d55877132a381acd353b4cd8bb
+[puppet]
+	nextseriesfile = /Users/luke/.puppet_next_series
+[core]
+	excludesfile = /Users/luke/.gitignore_global
+[difftool "sourcetree"]
+	cmd = opendiff \"$LOCAL\" \"$REMOTE\"
+	path = 
+[mergetool "sourcetree"]
+	cmd = /Applications/SourceTree.app/Contents/Resources/opendiff-w.sh \"$LOCAL\" \"$REMOTE\" -ancestor \"$BASE\" -merge \"$MERGED\"
+	trustExitCode = true
+[credential]
+	helper = osxkeychain
+[push]
+	default = simple

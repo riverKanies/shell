@@ -1,0 +1,31 @@
+var
+tmp
+git
+svn
+cvs
+darcs
+.hushlogin
+.Xauthority
+.viminfo
+known_hosts
+*.swp
+*.swo
+bzr
+.vagrant
+VirtualBox VMs
+etc/puppet/ssl
+.jbapps-luke
+etc/ssh/id_rsa
+Insync
+etc/subversion
+.subversion
+Google Drive
+.netrwhist
+Movies
+Public
+Sites
+Music
+Pictures
+Library/Preferences
+Dropbox*
+Library/Application Support

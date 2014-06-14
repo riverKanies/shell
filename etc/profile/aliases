@@ -1,0 +1,51 @@
+###
+# vim: syntax=sh
+#
+# $Id: aliases 303 2007-03-21 17:58:58Z luke $
+
+alias more=$READER less=$READER
+alias h=history z=suspend mv='mv -i' l='ls -al' ld='ls -ld'
+alias lp='lp -o nobanner'
+alias lock='xlock -mode random'
+alias checkother='ps $PSARGS | grep -v luke | grep -v root |grep -v UID| grep -v console'
+alias diag='/usr/platform/$(uname -i)/sbin/prtdiag'
+alias lcd='pushd . >/dev/null; popd'
+alias pp='echo -n $PINK; popd; echo -n $NOCOLOR'
+alias f=finger
+alias sizes='sudo du -dsk * | sort -n'
+alias blank='xlock -mode blank'
+alias grep=egrep
+alias c=clear
+alias pef="ps $PSARGS | grep -v grep | grep"
+alias p="pine -p ~/etc/pine/pinerc.$UNAME"
+alias stamp='date +%Y%m%d%H%m%S'
+alias reload='. ~/.profile'
+alias update='builtin cd ~/etc; cvs up -d; builtin cd -'
+alias reup='update; reload'
+alias g4='stty erase '
+alias svnprops='svn propset svn:keywords id'
+alias gvim='/Applications/MacVim.app/Contents/MacOS/Vim -g'
+
+#for ls in /usr/local/bin/ls /sw/bin/ls /Users/sw/bin/ls /bin/ls; do
+#
+#if [ -x /usr/local/bin/ls ]; then
+#	LS=/usr/local/bin/ls
+#else
+#	LS=/bin/ls
+#fi
+#
+
+if [ $($WHICH gls 2>/dev/null) ]; then
+    alias ls="gls --color"
+else
+    ls -d --color . >/dev/null 2>/dev/null
+    if [ $? == 0 ]; then
+        alias ls="ls --color"
+    fi
+fi
+#unset LS
+
+VIM=$($WHICH vim | grep -v '^no')
+if [ -n "$VIM" ]; then
+	alias vi=$VIM
+fi

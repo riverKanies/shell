@@ -1,0 +1,31 @@
+###
+# vim: syntax=sh
+# the initialization links
+#
+# $Id: links 1 2005-03-24 06:53:49Z luke $
+
+LINKS='
+	etc/profile/init:~/.profile
+	etc/ssh:~/.ssh
+	etc/vim/vimrc:~/.vimrc
+'
+
+if [ ! -d ~/tmp ]; then
+	mkdir ~/tmp
+fi
+
+for each in $LINKS; do
+	set -- `echo $each | sed -e 's/:/ /'`
+	from=$1
+	to=`eval echo $2`
+	file=`basename $to`
+	if [ -f $to -a ! -L $to ]; then
+		echo moving $to to ~/tmp/$file.old
+		mv $to ~/tmp/$file.old
+	fi
+	if [ ! -L $to ]; then
+		ln -s $from $to
+	fi
+done
+
+unset LINKS

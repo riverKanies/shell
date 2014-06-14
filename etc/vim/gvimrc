@@ -1,0 +1,8 @@
+highlight Normal guibg=black
+highlight Normal guifg=wheat
+set guifont=-misc-fixed-medium-r-normal-*-*-130-*-*-c-*-iso8859-1
+gui
+syntax on
+set showmatch
+set autoindent
+set tabstop=3

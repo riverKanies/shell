@@ -1,0 +1,7 @@
+###
+#
+# $Id: vars.gentoo 1 2005-03-24 06:53:49Z luke $
+
+MANPATH=$MANPATH:/usr/X11R6/man:/usr/share/man
+
+PATH=$PATH:/usr/X11R6/bin

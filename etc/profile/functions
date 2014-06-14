@@ -1,0 +1,72 @@
+###
+# vim: syntax=sh
+#
+# $Id: functions 303 2007-03-21 17:58:58Z luke $
+
+function les
+{
+	if [ "X$1" = "X" ]; then
+		ls -al | $READER -E $LESSARGS
+	else
+		ls -ald ${@} | $READER -E $LESSARGS
+	fi
+}
+
+function which
+{
+  		for x in $(echo $PATH|sed 's/:/ /g')
+  		do
+     		ls -dl $x/$1 2>/dev/null
+  		done
+}
+
+function setrubylib
+{
+      export RUBYLIB=$PWD/lib:$RUBYLIB
+}
+
+# kill! kill! kill!
+function whack
+{
+	numlines=$(ps $PSARGS | grep $1 | grep -v grep | wc -l)
+	echo Processes = $numlines
+	if [ $numlines != 0 -a $EUID != 1 ]; then
+		ps $PSARGS | grep $1 | grep -v grep | awk '{ print $2 }' |xargs sudo kill -9
+	else
+		if [ $numlines != 0  ]; then
+			ps $PSARGS | grep $1 | grep -v grep | awk '{ print $2 }' |xargs kill -9
+		fi
+	fi
+}
+
+function manwhich
+{
+	for x in $(echo $MANPATH|sed 's/:/ /g')
+	do
+		ls $x/*/$1.* 2>/dev/null
+	done
+}
+
+function rd
+{
+	rd2 -r rd/rd2man-lib.rb  $1  | nroff -man | $PAGER
+}
+
+function retitle
+{
+    echo -ne "\033]0;$1\007"
+}
+
+if [ "$BASH" ]; then
+	function cd
+	{
+   		if [ "$1" ]; then
+      		if [ "$1" = '-' ]; then
+         		pushd - >/dev/null
+      		else pushd "$@" >/dev/null
+      		fi
+   		else pushd $HOME >/dev/null
+   		fi
+	}
+fi
+

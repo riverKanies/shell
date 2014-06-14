@@ -1,0 +1,6 @@
+###
+#
+# vim: syntax=sh
+# $Id: vars.OpenBSD 152 2006-01-09 23:50:31Z luke $
+
+PSARGS='-auxwww'

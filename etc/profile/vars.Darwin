@@ -1,0 +1,20 @@
+###
+#
+# vim: syntax=sh
+# $Id: vars.Darwin 370 2008-03-07 03:32:38Z luke $
+
+MANPATH=$MANPATH:/usr/share/man
+
+PSARGS='auxwww'
+if [ -d /Users/sw/bin ]; then
+    base=/Users/sw
+elif [ -d /sw/bin ]; then
+    base=/sw
+elif [ -d /opt/local/bin ]; then
+    base=/opt/local
+fi
+
+PATH=$base/bin:$base/sbin:$PATH:/usr/X11R6/bin
+MANPATH=$base/man:$base/share/man:$MANPATH:/usr/X11R6/man
+
+unset base
